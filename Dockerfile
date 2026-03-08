@@ -10,11 +10,18 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# 1. Adăugăm indexul piwheels.org - acesta are binare optimizate pt Pi 4
-# 2. Instalăm NumPy < 2.0 (Bariera anti-Illegal Instruction)
-# 3. Instalăm Ultralytics care va trage singur Torch-ul corect
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --extra-index-url https://www.piwheels.org "numpy<2.0" flask opencv-python-headless ultralytics
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir \
+    "numpy==1.26.4" \
+    "flask==3.0.3" \
+    "opencv-python-headless==4.9.0.80"
+
+RUN pip install --no-cache-dir \
+    --index-url https://download.pytorch.org/whl/cpu \
+    "torch==2.3.1" \
+    "torchvision==0.18.1"
+
+RUN pip install --no-cache-dir "ultralytics==8.2.103"
 
 COPY parking_flask.py .
 COPY parking_rois.json .
