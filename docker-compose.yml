@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  parking_detector:
+    build: .
+    container_name: parking_detector
+    network_mode: "host"
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RTSP_URL=rtsp://127.0.0.1:8554/stream1
